@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SMARTTECHUG — News & Study Online</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root{
+      --bg:#071024;
+      --card:#0b1220;
+      --accent:#00c2a8;
+      --accent-2:#ff8c00;
+      --muted:#9aa4b2;
+      --glass:rgba(255,255,255,0.03);
+      --radius:12px;
+      --maxw:1180px;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg) 0%, #071a2a 78%);color:#e7f3f2;-webkit-font-smoothing:antialiased}
+    .page-wrap{max-width:1180px;margin:20px auto;padding:18px}
+    /* header (kept) */
+    header{display:flex;align-items:center;gap:16px;padding:12px 16px;background:linear-gradient(180deg, rgba(2,6,23,0.45), rgba(2,6,23,0.25));border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.45)}
+    .logo img{width:64px;height:64px;object-fit:cover;border-radius:10px}
+    header h1{margin:0;font-size:18px}
+    nav{margin-left:auto;display:flex;gap:8px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;transition:all .18s}
+    nav a:hover, nav a[aria-current="page"]{background:var(--glass);color:#fff;transform:translateY(-2px)}
+
+    /* layout */
+    .split{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px;align-items:start}
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.02));padding:14px;border-radius:12px;border:2px solid rgba(0,194,168,0.06);box-shadow:0 12px 36px rgba(2,6,23,0.4)}
+    .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+    .search{flex:1;min-width:160px;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer;color:var(--muted);font-weight:700}
+    .chip.active{background:linear-gradient(90deg,var(--accent),#00a88f);color:#04202a;border-color:transparent;box-shadow:0 12px 36px rgba(0,194,168,0.08)}
+
+    /* news cards */
+    .news-list{display:grid;gap:12px}
+    .news-card{display:flex;gap:14px;padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);align-items:flex-start;transition:transform .28s,box-shadow .28s}
+    .news-thumb{width:180px;height:110px;border-radius:8px;object-fit:cover;flex-shrink:0}
+    .news-meta{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .news-card:hover{transform:translateY(-8px);box-shadow:0 28px 70px rgba(2,6,23,0.6)}
+    .news-cta{margin-top:8px}
+
+    /* sidebar */
+    .sidebar .list{display:flex;flex-direction:column;gap:8px}
+    .sidebar .small-card{padding:10px;border-radius:8px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* study area */
+    .study{margin-top:18px;display:grid;grid-template-columns:1fr 320px;gap:18px}
+    .card-title{display:flex;justify-content:space-between;align-items:center}
+    .tabs{display:flex;gap:8px;margin-bottom:12px}
+    .tab{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer;color:var(--muted)}
+    .tab.active{background:linear-gradient(90deg,var(--accent),#00a88f);color:#04202a;font-weight:700}
+
+    .form-row{display:flex;gap:8px}
+    .input, textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    .btn{padding:10px 12px;border-radius:8px;border:none;cursor:pointer;background:var(--accent);color:#04202a;font-weight:700}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.05);color:var(--muted)}
+
+    /* dashboard lists */
+    .file-item{display:flex;justify-content:space-between;gap:10px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(2,6,23,0.6),rgba(2,6,23,0.6));z-index:60}
+    .modal.show{display:flex}
+    .modal-card{width:min(920px,94%);background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 24px 80px rgba(2,6,23,0.7)}
+    .modal img{width:100%;height:320px;object-fit:cover;border-radius:8px;margin-bottom:12px}
+
+    /* decorations & animations */
+    .floaty{animation:floaty 6s ease-in-out infinite}
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(12px) scale(.996);transition:opacity .64s ease,transform .64s ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* responsive */
+    @media (max-width:980px){.split{grid-template-columns:1fr}.study{grid-template-columns:1fr}.split .sidebar{order:2}}
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- header kept -->
+    <header>
+      <div class="logo"><img src="logo.png" alt="SMARTTECHUG Logo"></div>
+      <h1>SMARTTECHUG</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Our Services</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="Study.HTML">Study</a>
+        <!-- Ensure header on this page uses the same filename (space encoded) so links resolve consistently -->
+      
+      </nav>
+    </header>
+
+    <!-- top hero -->
+    <section class="panel reveal" id="news-hero" style="margin-top:18px;display:flex;gap:14px;align-items:center;">
+      <div style="flex:1">
+        <h2 style="margin:0 0 6px;color:#eafaf4">News & Study Online</h2>
+        <p class="small" style="margin:0;color:var(--muted)">Latest announcements, learning resources and a secure student/admin area to access course materials.</p>
+      </div>
+      <div class="floaty" aria-hidden="true" style="width:140px;height:88px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#04202a;font-weight:800;box-shadow:0 12px 40px rgba(0,194,168,0.08)">LEARN</div>
+    </section>
+
+    <!-- main split: news + sidebar -->
+    <div class="split">
+      <main>
+        <section class="panel reveal" aria-labelledby="news-heading">
+          <div class="controls">
+            <input id="q" class="search" type="search" placeholder="Search news, headlines or content..." aria-label="Search news">
+            <div class="chips" id="chips">
+              <div class="chip active" data-cat="">All</div>
+              <div class="chip" data-cat="hot">Hot</div>
+              <div class="chip" data-cat="tech">Tech</div>
+              <div class="chip" data-cat="local">Local</div>
+              <div class="chip" data-cat="international">International</div>
+              <div class="chip" data-cat="sports">Sports</div>
+            </div>
+          </div>
+
+          <div id="newsList" class="news-list" aria-live="polite"></div>
+        </section>
+
+        <!-- Study area -->
+        <section class="panel reveal study" aria-label="Study online area" style="margin-top:18px">
+          <div>
+            <div class="card-title"><h3 style="margin:0">Study Online — Student access</h3><small class="small">Secure materials & admin tools</small></div>
+            <div style="margin-top:12px" id="studyApp">
+              <div class="tabs" role="tablist">
+                <div class="tab active" data-role="student">Student</div>
+                <div class="tab" data-role="admin">Admin</div>
+              </div>
+
+              <div id="studentForm">
+                <div style="display:grid;gap:8px">
+                  <input id="stuEmail" class="input" placeholder="Email" type="email" required>
+                  <input id="stuPass" class="input" placeholder="Password" type="password" required>
+                  <div style="display:flex;gap:8px">
+                    <button id="stuLogin" class="btn">Login</button>
+                    <button id="applyBtn" class="btn secondary" type="button">Apply for Access</button>
+                  </div>
+                  <div id="stuMsg" class="small" style="color:var(--accent-2);display:none"></div>
+                </div>
+              </div>
+
+              <div id="adminForm" style="display:none">
+                <div style="display:grid;gap:8px">
+                  <input id="admEmail" class="input" placeholder="Admin email">
+                  <input id="admPass" class="input" placeholder="Password" type="password">
+                  <div style="display:flex;gap:8px">
+                    <button id="admLogin" class="btn">Admin login</button>
+                    <button id="admDemo" class="btn secondary" type="button">Demo creds</button>
+                  </div>
+                  <div id="admMsg" class="small" style="color:var(--accent-2);display:none"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside style="width:320px">
+            <div class="panel small-card" style="padding:12px">
+              <h4 style="margin:0 0 8px">Quick facts</h4>
+              <ul style="margin:0;padding-left:18px;color:var(--muted)">
+                <li>Secure access for students and admins</li>
+                <li>Downloadable course materials (PDF/video)</li>
+                <li>Admin can publish and approve applicants</li>
+              </ul>
+            </div>
+          </aside>
+        </section>
+      </main>
+
+      <!-- sidebar -->
+      <aside class="panel sidebar reveal">
+        <h4 style="margin-top:0">Latest</h4>
+        <div id="latest" class="list small-card"></div>
+
+        <h4 style="margin-top:12px">Categories</h4>
+        <div class="list" id="sideCats"></div>
+
+        <h4 style="margin-top:12px">Popular materials</h4>
+        <div id="popular" class="small-card"></div>
+      </aside>
+    </div>
+
+    <footer style="margin-top:18px;text-align:center;color:var(--muted)">
+      <p>Follow us: <a href="https://wa.me/256783278084" target="_blank" style="color:var(--accent)">WhatsApp</a> • <a href="mailto:info@smarttechug.com" style="color:var(--accent)">Email</a></p>
+      <p>&copy; <span id="year"></span> SMARTTECHUG</p>
+      <p><a href="#news-hero" style="color:var(--muted)">Back to top ↑</a></p>
+    </footer>
+  </div>
+
+  <!-- modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button id="close" class="btn secondary" style="float:right">Close</button>
+      <img id="mImg" src="" alt="">
+      <h3 id="mTitle" style="margin:6px 0 4px"></h3>
+      <div id="mMeta" class="small"></div>
+      <p id="mBody" style="margin-top:12px;color:var(--muted)"></p>
+    </div>
+  </div>
+
+  <script>
+    // initial data (professional/updated)
+    const news = [
+      {id:1, title:"SMARTTECHUG launches certification courses", category:"tech", img:"https://via.placeholder.com/900x500?text=E-Learninghttps://www.google.com/imgres?q=study%20online%20certificates&imgurl=https%3A%2F%2Fd502jbuhuh9wk.cloudfront.net%2Farticles%2F64b7b98ae4b021efeeba4965%2FH3m6Ifreeonlinecourseswithcertificates.jpg&imgrefurl=https%3A%2F%2Fwww.learntoupgrade.com%2Fblog%2Ffree-online-courses-with-certificates-the-future-of-professional-learning&docid=gw4PBFoSCMrf0M&tbnid=UlWDDV3gaaTkHM&vet=12ahUKEwjLtO3cl4mRAxWtbqQEHf9XGmgQM3oECDQQAA..i&w=1260&h=720&hcb=2&ved=2ahUKEwjLtO3cl4mRAxWtbqQEHf9XGmgQM3oECDQQAA", date:"2025-11-01", summary:"New certification tracks for web, cloud and data analytics.", body:"We launched accredited courses with hands-on labs, certificates and local mentorship. Early-bird scholarships available."},
+      {id:2, title:"Community Hackathon: winners announced", category:"local", img:"https://via.placeholder.com/900x500?text=Hackathon", date:"2025-10-21", summary:"Local innovators showcased apps.", body:"Winners receive mentorship, seed support and access to our incubation program."},
+      {id:3, title:"Strategic partnership expands content", category:"hot", img:"https://via.placeholder.com/900x500?text=Partnership", date:"2025-11-05", summary:"Partnership with international edtech.", body:"This partnership brings international curricula and certification pathways to our learners."},
+      {id:4, title:"New research: digital learning access", category:"international", img:"https://via.placeholder.com/900x500?text=Research", date:"2025-11-07", summary:"Collaborative open research across regions.", body:"The research focuses on accessibility and low-bandwidth content distribution."},
+      {id:5, title:"Student project showcase", category:"hot", img:"https://via.placeholder.com/900x500?text=Showcase", date:"2025-10-30", summary:"Top student projects from our courses.", body:"Highlights include local marketplace apps and data dashboards improving small business insights."}
+    ];
+
+    // utilities
+    const el = id => document.getElementById(id);
+    const q = el('q');
+    const newsList = el('newsList');
+    const chips = document.getElementById('chips');
+    const latest = el('latest');
+    const sideCats = el('sideCats');
+    const popular = el('popular');
+    const modal = el('modal');
+
+    function renderList(filter='', search=''){
+      newsList.innerHTML = '';
+      const s = (search||'').trim().toLowerCase();
+      const filtered = news.filter(n=>(!filter || n.category===filter) && (!s || (n.title + n.summary + n.body).toLowerCase().includes(s)));
+      if(filtered.length===0){ newsList.innerHTML = '<div class="small">No items found.</div>'; return; }
+      filtered.forEach(n=>{
+        const wrap = document.createElement('div'); wrap.className='news-card';
+        wrap.innerHTML = `
+          <img class="news-thumb" src="${n.img}" alt="${n.title}">
+          <div style="flex:1">
+            <div class="news-meta">${new Date(n.date).toLocaleDateString()} • ${n.category.toUpperCase()}</div>
+            <h3 style="margin:0 0 6px">${n.title}</h3>
+            <p style="margin:0;color:var(--muted)">${n.summary}</p>
+            <div class="news-cta"><button class="btn" data-id="${n.id}">Read more</button></div>
+          </div>
+        `;
+        newsList.appendChild(wrap);
+      });
+    }
+
+    function renderSidebar(){
+      latest.innerHTML = news.slice(0,3).map(n=>`<div class="small-card" style="margin-bottom:8px"><strong>${n.title}</strong><div class="small">${new Date(n.date).toLocaleDateString()}</div></div>`).join('');
+      // categories
+      const cats = [...new Set(news.map(n=>n.category))];
+      sideCats.innerHTML = cats.map(c=>`<button class="chip" data-cat="${c}" style="text-align:left">${c.toUpperCase()}</button>`).join('');
+      popular.innerHTML = `<div class="small-card"><strong>Top material:</strong><div class="small" style="margin-top:6px">Intro to Web Development — downloadable slides</div></div>`;
+    }
+
+    // interactions
+    chips.addEventListener('click', e=>{
+      if(!e.target.matches('.chip')) return;
+      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      e.target.classList.add('active');
+      const cat = e.target.dataset.cat || '';
+      renderList(cat, q.value);
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+    sideCats.addEventListener('click', e=>{
+      if(!e.target.matches('.chip')) return;
+      const cat = e.target.dataset.cat;
+      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      document.querySelector(`.chip[data-cat="${cat}"]`)?.classList.add('active');
+      renderList(cat, q.value);
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+
+    q.addEventListener('input', ()=> {
+      const active = document.querySelector('.chip.active')?.dataset.cat || '';
+      renderList(active, q.value);
+    });
+
+    // read more modal
+    document.body.addEventListener('click', e=>{
+      const btn = e.target.closest('button[data-id]');
+      if(btn){
+        const id = Number(btn.dataset.id);
+        const item = news.find(x=>x.id===id);
+        if(item){
+          el('mImg').src = item.img;
+          el('mTitle').textContent = item.title;
+          el('mMeta').textContent = `${new Date(item.date).toLocaleDateString()} • ${item.category.toUpperCase()}`;
+          el('mBody').textContent = item.body;
+          modal.classList.add('show');
+        }
+      }
+    });
+    el('close').addEventListener('click', ()=>modal.classList.remove('show'));
+    modal.addEventListener('click', e=>{ if(e.target===modal) modal.classList.remove('show'); });
+
+    // study app simple demo
+    document.querySelectorAll('.tab').forEach(t=>{
+      t.addEventListener('click', ()=>{
+        document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+        const role = t.dataset.role;
+        el('studentForm').style.display = role==='student' ? '' : 'none';
+        el('adminForm').style.display = role==='admin' ? '' : 'none';
+      });
+    });
+
+    // demo data for student materials & applicants (localStorage)
+    const PKEY='st_published_demo', AKEY='st_applicants_demo', UKEY='st_users_demo';
+    function read(k){return JSON.parse(localStorage.getItem(k)||'[]')}
+    function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
+    if(read(PKEY).length===0) write(PKEY, [{id:1,title:'Intro to Web Development',desc:'Slides & notes',file:'intro-web.pdf'}]);
+
+    function renderStudentFiles(){
+      const files = read(PKEY);
+      const wrap = document.createElement('div');
+      if(files.length===0) wrap.innerHTML='<div class="small">No materials</div>';
+      else files.forEach(f=>{
+        const d = document.createElement('div'); d.className='file-item';
+        d.innerHTML = `<div><strong>${f.title}</strong><div class="small">${f.desc}</div></div><div><button class="btn secondary" data-file="${f.file}">Download</button></div>`;
+        wrap.appendChild(d);
+      });
+      // show in modal for demo
+      if(confirm('Open student dashboard demo?')) {
+        const win = window.open('','_blank','width=800,height=600');
+        if(win){
+          win.document.write('<h3>Student Materials</h3>');
+          win.document.write(wrap.innerHTML);
+        }
+      }
+    }
+
+    el('applyBtn').addEventListener('click', ()=>{
+      const email = prompt('Enter email to apply for access:');
+      if(!email) return alert('Cancelled');
+      const apps = read(AKEY);
+      if(apps.find(a=>a.email===email)) return alert('Already applied');
+      apps.push({id:Date.now(),email,status:'pending'});
+      write(AKEY,apps);
+      alert('Application submitted. Admin will review.');
+    });
+
+    el('stuLogin').addEventListener('click', ()=>{
+      const email = el('stuEmail').value.trim(), pass = el('stuPass').value.trim();
+      if(!email||!pass) return alert('Enter credentials');
+      const users = read(UKEY);
+      const u = users.find(x=>x.email===email);
+      if(!u) { el('stuMsg').style.display='block'; el('stuMsg').textContent='Access denied — await approval.'; return; }
+      alert('Login successful (demo). Materials will open.');
+      renderStudentFiles();
+    });
+
+    el('admDemo').addEventListener('click', ()=>{ el('admEmail').value='admin@smarttechug.com'; el('admPass').value='admin123'; });
+    el('admLogin').addEventListener('click', ()=>{
+      const e=el('admEmail').value.trim(), p=el('admPass').value.trim();
+      if(e==='admin@smarttechug.com'&&p==='admin123'){
+        // admin tools: approve applicants, publish content
+        const apps = read(AKEY);
+        if(apps.length===0) alert('No applicants');
+        else {
+          apps.forEach(a=>{
+            const users = read(UKEY);
+            users.push({email:a.email}); write(UKEY,users);
+          });
+          write(AKEY,[]);
+          alert('All applicants approved (demo).');
+        }
+        const pub = read(PKEY);
+        pub.unshift({id:Date.now(),title:'New: Data Analytics Primer',desc:'Practical notes',file:'data-primer.pdf'});
+        write(PKEY,pub);
+        alert('Sample material published (demo).');
+      } else { el('admMsg').style.display='block'; el('admMsg').textContent='Invalid demo credentials'; }
+    });
+
+    // small reveal on scroll
+    const obs = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }); },{threshold:0.08});
+    document.querySelectorAll('.reveal').forEach(n=>obs.observe(n));
+
+    // init
+    renderList(); renderSidebar();
+    el('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

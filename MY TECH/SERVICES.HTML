@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SMARTTECHUG — Services</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Page-specific styles / animations -->
+  <style>
+    :root{
+      --bg:#071024;
+      --card:#0b1220;
+      --accent:#00c2a8;
+      --accent-2:#ff8c00;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      --maxw:1180px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg) 0%, #071a2a 80%);color:#e6eef6;-webkit-font-smoothing:antialiased}
+    .container{max-width:var(--maxw);margin:28px auto;padding:0 20px}
+
+    /* preserve existing header look (keeps markup unchanged) */
+    header{display:flex;align-items:center;gap:16px;padding:12px 0;background:linear-gradient(180deg, rgba(2,6,23,0.45), rgba(2,6,23,0.25));backdrop-filter:blur(6px);border-radius:12px;padding:12px 20px;box-shadow:0 8px 30px rgba(2,6,23,0.45)}
+    .logo img{width:64px;height:64px;object-fit:cover;border-radius:10px}
+    header h1{margin:0;font-size:18px}
+    header nav{margin-left:auto;display:flex;gap:8px;align-items:center}
+    header nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;transition:all .18s ease}
+    header nav a:hover, header nav a[aria-current="page"]{background:var(--glass);color:#fff;transform:translateY(-2px)}
+
+    /* Hero */
+    .hero{
+      margin:20px 0;padding:36px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:0 24px 60px rgba(2,6,23,0.6);display:flex;gap:22px;align-items:center;
+      overflow:hidden;border:2px solid rgba(0,194,168,0.06);
+    }
+    .hero .meta{flex:1;min-width:280px}
+    .hero h1{font-size:28px;margin:0 0 8px;color:#fff;line-height:1.05}
+    .hero p.lead{margin:0 0 14px;color:var(--muted);font-size:15px}
+    .hero .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:#04202a;font-weight:700;text-decoration:none;box-shadow:0 12px 40px rgba(0,194,168,0.12);transition:transform .16s}
+    .hero .cta:hover{transform:translateY(-6px)}
+    .hero .visual{width:260px;height:160px;border-radius:12px;background:linear-gradient(135deg,rgba(0,194,168,0.12),rgba(0,0,0,0.12));display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px rgba(2,6,23,0.55)}
+    .hero svg{width:200px;height:130px;opacity:.98;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.45))}
+
+    /* services summary row */
+    .summary-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+    .summary-pill{background:rgba(255,255,255,0.02);padding:8px 12px;border-radius:999px;color:var(--muted);font-weight:600;border:1px solid rgba(255,255,255,0.02)}
+
+    /* Services grid */
+    .services-intro{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px}
+    .services-intro h2{margin:0}
+    .services-grid{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+
+    .service-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      padding:20px;border-radius:14px;border:2px solid rgba(0,194,168,0.06);
+      box-shadow:0 12px 36px rgba(2,6,23,0.4);transition:transform .36s cubic-bezier(.2,.9,.2,1),box-shadow .36s,border-color .22s;
+      display:flex;flex-direction:column;gap:12px;align-items:flex-start;
+      overflow:hidden;position:relative;
+    }
+    .service-top{display:flex;gap:12px;align-items:center;width:100%}
+    .service-badge{width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,rgba(0,194,168,0.14),rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:center;font-size:20px;color:#04202a;font-weight:800;flex-shrink:0;border:2px solid rgba(0,194,168,0.06)}
+    .service-card h3{margin:0;font-size:16px;color:#eafaf4}
+    .service-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+
+    .service-tags{margin-top:auto;display:flex;flex-wrap:wrap;gap:8px}
+    .tag{padding:6px 8px;border-radius:999px;background:lab(52.35% 82.38 -12.64 / 0.02);color:var(--muted);font-size:13px;border:1px solid #ffffff05}
+
+    .service-card:hover{transform:translateY(-10px) scale(1.01);box-shadow:0 36px 90px rgba(2,6,23,0.7);border-color:rgba(0,194,168,0.18)}
+    .service-card::after{content:'';position:absolute;right:-20%;top:-20%;width:140%;height:140%;background:radial-gradient(circle at 10% 10%, rgba(0,194,168,0.06), transparent 12%);opacity:0;transform:rotate(-12deg);transition:opacity .36s}
+    .service-card:hover::after{opacity:1}
+
+    /* detail / features section */
+    .service-detail{margin-top:26px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));padding:18px;border-radius:12px;border:2px solid rgba(0,194,168,0.06);box-shadow:0 14px 44px rgba(2,6,23,0.44)}
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .feature{
+      padding:14px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);transition:transform .28s,box-shadow .28s;
+    }
+    .feature:hover{transform:translateY(-8px);box-shadow:0 18px 48px rgba(2,6,23,0.45)}
+
+    /* decoration ribbon */
+    .ribbon{
+      position:absolute;right:28px;top:-10px;padding:6px 12px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#04202a;font-weight:800;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,0.4)
+    }
+
+    /* micro animations */
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+    .floaty{animation:floaty 6s ease-in-out infinite}
+
+    /* reveal on scroll */
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .64s ease,transform .64s ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* subtle stagger */
+    .service-card:nth-child(1){transition-delay:.04s}
+    .service-card:nth-child(2){transition-delay:.08s}
+    .service-card:nth-child(3){transition-delay:.12s}
+    .service-card:nth-child(4){transition-delay:.16s}
+    .service-card:nth-child(5){transition-delay:.20s}
+    .service-card:nth-child(6){transition-delay:.24s}
+    .service-card:nth-child(7){transition-delay:.28s}
+    .service-card:nth-child(8){transition-delay:.32s}
+
+    /* footer */
+    footer{margin-top:28px;text-align:center;color:var(--muted);padding:18px 0;border-top:2px solid rgba(0,194,168,0.06)}
+    footer a{color:var(--accent);text-decoration:none}
+
+    /* responsive */
+    @media (max-width:880px){
+      .hero{flex-direction:column;align-items:flex-start}
+      .services-intro{flex-direction:column;align-items:flex-start}
+      .services-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- header kept as requested -->
+    <header>
+      <div class="logo">
+        <img src="logo.png" alt="SMARTTECHUG Logo">
+      </div>
+      <h1>SMARTTECHUG</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html" aria-current="page">Our Services</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="Study.HTML">Studay Online</a>
+      </nav>
+    </header>
+
+    <!-- hero -->
+    <section class="hero reveal" id="services-hero">
+      <div class="meta">
+        <p class="welcome-note" style="margin:0;color:var(--accent);font-weight:700;letter-spacing:1px">SERVICES</p>
+        <h1>Build, Secure & Scale — End-to-end Digital Services</h1>
+        <p class="lead">We combine design, engineering, cloud and training to deliver production-ready solutions: websites, apps, AI, cloud platforms, cyber security and managed IT.</p>
+        <div class="summary-row" aria-hidden="true">
+          <span class="summary-pill">Web & Mobile</span>
+          <span class="summary-pill">Cloud & DevOps</span>
+          <span class="summary-pill">AI & Automation</span>
+          <span class="summary-pill">Security & Compliance</span>
+        </div>
+        <div style="margin-top:14px">
+          <a class="cta" href="contact.html">Request a Quote</a>
+          <a class="cta" href="about.html" style="margin-left:10px;background:transparent;color:var(--muted);box-shadow:none;border:1px solid rgba(255,255,255,0.04)">Learn about our process</a>
+        </div>
+      </div>
+
+      <div class="visual floaty" aria-hidden="true">
+        <svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="decorative tech graphic">
+          <defs>
+            <linearGradient id="g2" x1="0" x2="1">
+              <stop offset="0" stop-color="#00c2a8" stop-opacity=".95" />
+              <stop offset="1" stop-color="#ff8c00" stop-opacity=".85" />
+            </linearGradient>
+          </defs>
+          <rect x="6" y="6" width="208" height="128" rx="12" fill="url(#g2)" opacity="0.08"/>
+          <g fill="#fff" opacity="0.9">
+            <rect x="26" y="30" width="44" height="24" rx="4"/>
+            <circle cx="120" cy="50" r="10"/>
+            <rect x="140" y="30" width="46" height="24" rx="6"/>
+            <path d="M60 88c8-8 18-10 28-6 10 4 18 12 26 18" stroke="#fff" stroke-width="1.4" fill="none" opacity=".9"/>
+          </g>
+        </svg>
+      </div>
+      <div class="ribbon">Trusted • Practical • Local</div>
+    </section>
+
+    <!-- services grid -->
+    <section class="services" aria-labelledby="services-list">
+      <div class="services-intro">
+        <h2 id="services-list">Comprehensive Services</h2>
+        <p class="muted" style="margin:0">Solutions for startups, SMEs and organisations — practical, secure and scalable.</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- Web & Mobile -->
+        <article class="service-card reveal">
+          <div class="service-top">
+            <div class="service-badge">01</div>
+            <div>
+              <h3>Web & Mobile App Development</h3>
+              <p class="muted" style="margin:0 0 4px">Responsive web, native & cross-platform apps</p>
+            </div>
+          </div>
+          <p>Full-stack development: modern front-end (React/Vue), robust back-end (Node/.NET/PHP), APIs, payment integration, and mobile apps (Flutter, React Native). Delivery includes QA, performance tuning and progressive web apps (PWA).</p>
+          <div class="service-tags">
+            <span class="tag">Frontend</span><span class="tag">Backend</span><span class="tag">Mobile</span><span class="tag">PWA</span>
+          </div>
+        </article>
+
+        <!-- E‑commerce -->
+        <article class="service-card reveal">
+          <div class="service-top">
+            <div class="service-badge">02</div>
+            <div>
+              <h3>E‑commerce & Checkout</h3>
+              <p class="muted" style="margin:0 0 4px">Product strategy to live store</p>
+            </div>
+          </div>
+          <p>Store setup, catalog & inventory, user journeys, secure checkout, local payment gateway integrations, subscriptions, and conversion optimization. Platforms: WooCommerce, Shopify, custom headless solutions.</p>
+          <div class="service-tags">
+            <span class="tag">Payments</span><span class="tag">UX</span><span class="tag">Conversion</span>
+          </div>
+        </article>
+
+        <!-- Cloud & DevOps -->
+        <article class="service-card reveal">
+          <div class="service-top">
+            <div class="service-badge">03</div>
+            <div>
+              <h3>Cloud Architecture & DevOps</h3>
+              <p class="muted" style="margin:0 0 4px">Scalable, secure and cost‑aware</p>
+            </div>
+          </div>
+          <p>Design and implement cloud platforms on AWS/Azure/GCP: IaC (Terraform), containerization (Docker/Kubernetes), CI/CD pipelines, observability, autoscaling and cost control.</p>
+          <div class="service-tags">
+            <span class="tag">K8s</span><span class="tag">CI/CD</span><span class="tag">IaC</span>
+          </div>
+        </article>
+
+        <!-- AI & Automation -->
+        <article class="service-card reveal">
+          <div class="service-top">
+            <div class="service-badge">04</div>
+            <div>
+              <h3>AI, ML & Automation</h3>
+              <p class="muted" style="margin:0 0 4px">Practical AI-powered features</p>
+            </div>
+          </div>
+          <p>Proof-of-concept to production: chatbots, recommendation engines, document automation, and generative AI integrations using safe prompt patterns and on-prem or cloud models.</p>
+          <div class="service-tags">
+            <span class="tag">Chatbots</span><span class="tag">NLP</span><span class="tag">Automation</span>
+          </div>
+        </article>
+
+        <!-- Cybersecurity -->
+        <article class="service-card reveal">
+          <div class="service-top">
+            <div class="service-badge">05</div>
+            <div>
+              <h3>Cybersecurity & Compliance</h3>
+              <p class="muted" style="margin:0 0 4px">Secure-by-design approach</p>
+            </div>
+          </div>
+          <p>Risk assessments, secure development lifecycle, incident response planning, vulnerability scanning and guidance for compliance regimes (GDPR, local regulations). We harden systems and train staff on security best-practices.</p>
+          <div class="service-tags">
+            <span class="tag">Assessment</span><span class="tag">Pentest</span><span class="tag">Policy</span>
+          </div>
+        </article>
+
+        <!-- Data & Analytics -->
+        <article class="service-card reveal">
+          <div class="service-top">
+            <div class="service-badge">06</div>
+            <div>
+              <h3>Data Engineering & Analytics</h3>
+              <p class="muted" style="margin:0 0 4px">From tracking to dashboards</p>
+            </div>
+          </div>
+          <p>Data pipelines, warehousing, dashboards and BI. We instrument analytics, build ETL flows, and deliver dashboards that drive decisions and ROI measurement.</p>
+          <div class="service-tags">
+            <span class="tag">ETL</span><span class="tag">Dashboards</span><span class="tag">Tracking</span>
+          </div>
+        </article>
+
+        <!-- UI/UX & Branding -->
+        <article class="service-card reveal">
+          <div class="service-top">
+            <div class="service-badge">07</div>
+            <div>
+              <h3>UI/UX Design & Branding</h3>
+              <p class="muted" style="margin:0 0 4px">User-first product design</p>
+            </div>
+          </div>
+          <p>User research, wireframes, prototypes and brand identity. We create intuitive interfaces and visual systems that scale across web and mobile.</p>
+          <div class="service-tags">
+            <span class="tag">Design Systems</span><span class="tag">Prototyping</span><span class="tag">Brand</span>
+          </div>
+        </article>
+
+        <!-- Managed IT & Support -->
+        <article class="service-card reveal">
+          <div class="service-top">
+            <div class="service-badge">08</div>
+            <div>
+              <h3>Managed IT & Support</h3>
+              <p class="muted" style="margin:0 0 4px">Reliable day-to-day operations</p>
+            </div>
+          </div>
+          <p>Outsourced IT, helpdesk, monitoring, backups and SLA-driven support. We keep your systems healthy so you can focus on your core work.</p>
+          <div class="service-tags">
+            <span class="tag">Helpdesk</span><span class="tag">Monitoring</span><span class="tag">Backups</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- details / features -->
+      <div class="service-detail reveal">
+        <div>
+          <h3 style="margin-top:0">How we deliver — professional practice</h3>
+          <div class="features" role="list">
+            <div class="feature" role="listitem">
+              <strong>Discovery & Strategy</strong>
+              <p class="muted" style="margin:6px 0 0">Workshops, scope, success metrics and roadmap.</p>
+            </div>
+            <div class="feature" role="listitem">
+              <strong>Design & Prototype</strong>
+              <p class="muted" style="margin:6px 0 0">Rapid prototypes, usability testing and iterative design sprints.</p>
+            </div>
+            <div class="feature" role="listitem">
+              <strong>Engineering & QA</strong>
+              <p class="muted" style="margin:6px 0 0">Secure coding, automated tests, CI/CD and performance tuning.</p>
+            </div>
+            <div class="feature" role="listitem">
+              <strong>Deploy & Operate</strong>
+              <p class="muted" style="margin:6px 0 0">Managed deployments, monitoring, incident runbooks and cost optimisation.</p>
+            </div>
+            <div class="feature" role="listitem">
+              <strong>Training & Handover</strong>
+              <p class="muted" style="margin:6px 0 0">Admin training, documentation and optional ongoing coaching.</p>
+            </div>
+            <div class="feature" role="listitem">
+              <strong>Support & Growth</strong>
+              <p class="muted" style="margin:6px 0 0">Retainers, feature sprints and scaling advice as your business grows.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="service-detail-side" style="width:300px">
+          <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)">
+            <h4 style="margin:0 0 8px">Ready to start?</h4>
+            <p class="muted" style="margin:0 0 12px">Book a free 30‑minute consultation — we'll assess your goals and propose an initial plan.</p>
+            <a class="cta" href="contact.html" style="display:inline-block">Book Consultation</a>
+            <div style="margin-top:12px">
+              <small class="muted">Typical timelines</small>
+              <ul style="margin:6px 0 0;padding-left:18px;color:var(--muted)">
+                <li>Landing page — 1–2 weeks</li>
+                <li>Small web app — 4–8 weeks</li>
+                <li>Full platform — phased delivery</li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <footer>
+      <p>Follow us on: <a href="https://wa.me/256783278084" target="_blank" rel="noopener">WhatsApp</a> • <a href="mailto:info@smarttechug.com">Email</a></p>
+      <p>&copy; <span id="year">2026</span> SMARTTECHUG</p>
+      <p><a href="#services-hero" class="back-to-top-link" aria-label="Back to top">Back to top ↑</a></p>
+    </footer>
+  </div>
+
+  <script>
+    // reveal on scroll
+    (function(){
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) e.target.classList.add('visible');
+        });
+      }, {threshold: 0.08});
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+      // set year
+      const y = new Date().getFullYear();
+      const el = document.getElementById('year');
+      if(el) el.textContent = y;
+    })();
+  </script>
+</body>
+</html>

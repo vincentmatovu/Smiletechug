@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SMARTTECHUG - Contact Us</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Inline theme & header styles (matches SERVICES.HTML benchmark) -->
+  <style>
+    :root{
+      --bg:#071024;
+      --bg-2:#071a2a;
+      --card:#0b1220;
+      --accent:#00c2a8;
+      --accent-2:#ff8c00;
+      --muted:#9aa4b2;
+      --glass:rgba(255,255,255,0.03);
+      --radius:12px;
+      --ui-font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 80%);
+      color:#e6eef6;
+      font-family:var(--ui-font);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* Header appearance to match Services page */
+    header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:12px 20px;
+      background:linear-gradient(180deg, rgba(2,6,23,0.45), rgba(2,6,23,0.25));
+      backdrop-filter:blur(6px);
+      border-radius:12px;
+      box-shadow:0 8px 30px rgba(2,6,23,0.45);
+    }
+    .logo img{ width:64px; height:64px; object-fit:cover; border-radius:10px; }
+    header h1{ margin:0; font-size:18px; color:#eafaf4; font-weight:700; }
+
+    header nav{ margin-left:auto; display:flex; gap:8px; align-items:center; }
+    header nav a{
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:8px;
+      transition:all .18s ease;
+      font-weight:600;
+      font-size:14px;
+    }
+    header nav a:hover,
+    header nav a[aria-current="page"]{
+      background:var(--glass);
+      color:#fff;
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(0,0,0,0.18);
+    }
+
+    /* Back-to-top link style (orange) */
+    footer a.back-to-top{ color:var(--accent-2); font-weight:700; text-decoration:none; transition:opacity .18s, transform .12s }
+    footer a.back-to-top:hover{ opacity:.9; transform:translateY(-3px) }
+
+    /* keep existing small page-specific rules */
+    .container{ max-width:1100px; margin:0 auto; padding:18px; position:relative }
+
+    /* Contact card (white background) — keep dark text for readability */
+    .contact-hero{ display:flex; gap:20px; align-items:flex-start; margin:18px 0; flex-wrap:wrap; }
+    .contact-card{ background:#fff; padding:18px; border-radius:10px; box-shadow:0 8px 22px rgba(15,20,30,0.06); flex:1 1 320px; min-width:280px; color:#0b2240; }
+    .contact-card h2{ margin-top:0; color:#0b2240 }
+    .contact-card .small { color:#4a5660; }            /* darker muted on white */
+    .contact-card a { color:var(--accent); }          /* links readable on white */
+
+    /* Glass / extras card (dark theme card) */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.02);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 36px rgba(2,6,23,0.36);
+      color: #e6eef6; /* ensure text in .card is light on dark background */
+    }
+    .card h3, .card h4 { color: #eafaf4; }
+
+    /* Team / member meta contrast fix */
+    .team-member { background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent); }
+    .team-member .member-meta { color: inherit !important; } /* respect parent .card color */
+    .team-member .member-meta .role { color: var(--muted) !important; }
+    .team-member .member-meta a { color: var(--accent) !important; }
+
+    /* Support tiers and buttons */
+    .support-tier{ display:flex; gap:12px; margin-top:10px; flex-wrap:wrap }
+    .tier{ padding:10px 12px; border-radius:10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.02); min-width:140px; text-align:center; color:var(--muted) }
+    .btn{ padding:10px 14px; border-radius:8px; background:var(--accent); color:#04202a; border:none; cursor:pointer }
+    .btn.secondary{ background:transparent; border:1px solid rgba(10,20,40,0.06); color:var(--muted) }
+    .btn-outline{ padding:8px 12px; border-radius:8px; border:1px solid rgba(10,20,40,0.06); background:transparent; cursor:pointer }
+    .nl-input{ padding:8px 10px; border-radius:8px; border:1px solid rgba(10,20,40,0.05); flex:1 }
+
+    .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+    .contact-item{ display:flex; gap:10px; align-items:center; color:#334; }
+
+    /* responsive */
+    @media (max-width:900px){
+      .contact-hero{ flex-direction:column; }
+      .contact-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+
+  <style>
+    /* Small contact-page specific additions (preserved) */
+    .avatar{ width:64px; height:64px; border-radius:12px; object-fit:cover; flex-shrink:0; border:2px solid rgba(0,0,0,0.04) }
+    .team-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px }
+    .team-member{ display:flex; gap:12px; align-items:center; padding:10px; border-radius:8px; transition:transform .22s,box-shadow .22s; background:linear-gradient(180deg, rgba(11,34,64,0.02), rgba(11,34,64,0.01)) }
+    .team-member:hover{ transform:translateY(-6px); box-shadow:0 20px 60px rgba(11,34,64,0.08) }
+    .support-tier{ display:flex; gap:12px; margin-top:10px; flex-wrap:wrap }
+    .tier{ padding:10px 12px; border-radius:10px; background:#fbfdff; border:1px solid rgba(10,20,40,0.04); min-width:140px; text-align:center }
+    .btn{ padding:10px 14px; border-radius:8px; background:var(--accent); color:#04202a; border:none; cursor:pointer }
+    .btn.secondary{ background:transparent; border:1px solid rgba(10,20,40,0.06); color:var(--muted) }
+    .btn-outline{ padding:8px 12px; border-radius:8px; border:1px solid rgba(10,20,40,0.06); background:transparent; cursor:pointer }
+    .nl-input{ padding:8px 10px; border-radius:8px; border:1px solid rgba(10,20,40,0.05); flex:1 }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a id="top" class="top-anchor" style="position:absolute;left:0;top:0;height:1px;width:1px;overflow:hidden"></a>
+
+    <header>
+      <div class="logo">
+        <img src="logo.png" alt="SMARTTECHUG Logo" style="max-width:80px;">
+      </div>
+      <h1>SMARTTECHUG</h1>
+      <nav aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Our Services</a>
+        <a href="contact.html" aria-current="page">Contact Us</a>
+        <a href="Study.HTML">Study Online</a>
+      </nav>
+    </header>
+
+    <main>
+      <section style="margin-top:14px">
+        <div class="contact-hero">
+          <div class="contact-card">
+            <h2>Contact Information</h2>
+            <p class="small">We are happy to help — reach out with questions about services, projects, training or partnerships.</p>
+
+            <div class="contact-grid" aria-hidden="false">
+              <div class="contact-item">
+                <div class="icon">@</div>
+                <div>
+                  <strong>Email</strong>
+                  <div class="small"><a href="mailto:info@smarttechug.com">info@smarttechug.com</a></div>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="icon">☎</div>
+                <div>
+                  <strong>Phone</strong>
+                  <div class="small"><a href="tel:+256704000333">+256 704 000 333</a></div>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="icon">📍</div>
+                <div>
+                  <strong>Address</strong>
+                  <div class="small">Plot 12, Industrial Area, Kampala, Uganda</div>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="icon">🕒</div>
+                <div>
+                  <strong>Hours</strong>
+                  <div class="small">Mon–Fri: 8:00 — 17:00 (EAT)</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="small" style="margin-top:12px">Follow us:
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a> ·
+              <a href="https://wa.me/256704000333" target="_blank" rel="noopener noreferrer">WhatsApp</a> ·
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a> ·
+              <a href="https://linkedin.com/company/smarttechug" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </p>
+          </div>
+
+          <div class="contact-form" aria-labelledby="contact-form-title" style="flex:1;min-width:320px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.02));padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);box-shadow:0 12px 36px rgba(2,6,23,0.36)">
+            <h2 id="contact-form-title" style="margin-top:0;color:#eafaf4">Send a Message</h2>
+            <p class="small" style="color:var(--muted)">Fill the form below and we'll get back within 1-2 business days.</p>
+
+            <div id="form-success" class="success" role="status" aria-live="polite" style="display:none;margin-bottom:8px;background:rgba(0,194,168,0.06);padding:10px;border-radius:8px;color:#04202a">Thank you — your message has been received.</div>
+
+            <form id="contactForm" novalidate>
+              <div class="form-row" style="display:flex;gap:8px">
+                <div class="field" style="flex:1">
+                  <label for="name">Full name</label>
+                  <input id="name" name="name" type="text" required placeholder="Your full name" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit" />
+                </div>
+                <div class="field" style="flex:1">
+                  <label for="phone">Phone</label>
+                  <input id="phone" name="phone" type="tel" pattern="[\+0-9\s\-]{7,20}" placeholder="+256 7xx xxx xxx" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit" />
+                </div>
+              </div>
+
+              <div class="form-row" style="display:flex;gap:8px;margin-top:8px">
+                <div class="field" style="flex:1">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" required placeholder="you@example.com" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit" />
+                </div>
+                <div class="field" style="flex:1">
+                  <label for="subject">Subject</label>
+                  <select id="subject" name="subject" required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit">
+                    <option value="">Choose a subject</option>
+                    <option>Website project</option>
+                    <option>Graphic design</option>
+                    <option>Digital marketing</option>
+                    <option>Training / ICT consultancy</option>
+                    <option>Support / other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="margin-top:8px">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required placeholder="Tell us briefly what you need..." style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:inherit;min-height:120px"></textarea>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+                <input id="consent" type="checkbox" required />
+                <label for="consent" class="small" style="color:var(--muted)">I agree to be contacted regarding my request. Read our <a href="privacy.html">privacy policy</a>.</label>
+              </div>
+
+              <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+                <button type="submit" class="btn">Send message</button>
+                <button type="reset" class="btn secondary">Reset</button>
+                <div style="flex:1"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="map-wrap" aria-label="Business location map" style="margin-top:14px">
+          <iframe
+            title="SMARTTECHUG location"
+            width="100%"
+            height="360"
+            style="border:0;border-radius:12px;overflow:hidden"
+            loading="lazy"
+            allowfullscreen
+            src="https://www.google.com/maps?q=Plot+12+Industrial+Area+Kampala+Uganda&output=embed">
+          </iframe>
+        </div>
+
+        <div class="extras" id="extras" style="margin-top:18px">
+          <div>
+            <div class="card" style="padding:16px">
+              <h3 style="margin-top:0;color:#eafaf4">Our Team & Key Contacts</h3>
+              <div class="team-grid">
+                <div class="team-member">
+                  <img class="avatar" src="team-ceo.jpg" alt="CEO">
+                  <div class="member-meta" style="color:#e6eef6">
+                    <strong>Jane Nakato</strong>
+                    <div class="role" style="color:var(--muted)">CEO & Founder</div>
+                    <div class="small" style="color:var(--muted)">Business inquiries: <a href="mailto:jane@smarttechug.com">jane@smarttechug.com</a></div>
+                  </div>
+                </div>
+
+                <div class="team-member">
+                  <img class="avatar" src="team-cto.jpg" alt="CTO">
+                  <div class="member-meta" style="color:#e6eef6">
+                    <strong>Paul Kato</strong>
+                    <div class="role" style="color:var(--muted)">CTO</div>
+                    <div class="small" style="color:var(--muted)">Technical enquiries: <a href="mailto:paul@smarttechug.com">paul@smarttechug.com</a></div>
+                  </div>
+                </div>
+
+                <div class="team-member">
+                  <img class="avatar" src="team-sales.jpg" alt="Sales lead">
+                  <div class="member-meta" style="color:#e6eef6">
+                    <strong>Aisha Mbabazi</strong>
+                    <div class="role" style="color:var(--muted)">Head of Sales</div>
+                    <div class="small" style="color:var(--muted)">Sales & partnerships: <a href="mailto:sales@smarttechug.com">sales@smarttechug.com</a></div>
+                  </div>
+                </div>
+
+                <div class="team-member">
+                  <img class="avatar" src="team-support.jpg" alt="Support">
+                  <div class="member-meta" style="color:#e6eef6">
+                    <strong>Support Desk</strong>
+                    <div class="role" style="color:var(--muted)">Technical Support</div>
+                    <div class="small" style="color:var(--muted)">support@smarttechug.com • <a href="tel:+256704000333">+256 704 000 333</a></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top:12px" class="support-tier" aria-hidden="false">
+                <div class="tier">
+                  <strong>Standard</strong>
+                  <div class="muted">Email response within 48 hrs</div>
+                </div>
+                <div class="tier">
+                  <strong>Priority</strong>
+                  <div class="muted">SLA: 8-24 hrs (paid)</div>
+                </div>
+                <div class="tier">
+                  <strong>Enterprise</strong>
+                  <div class="muted">24/7 monitoring & dedicated manager</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div class="card" style="padding:16px;margin-top:12px">
+              <h3 style="margin-top:0;color:#eafaf4">Press & Media</h3>
+              <p class="small" style="color:var(--muted)">Journalists and partners can download our media kit (logo, brand guidelines, executive bios).</p>
+              <div class="media-kit" style="display:flex;gap:12px;align-items:center;justify-content:space-between">
+                <div class="desc small" style="color:var(--muted)">Media kit — 3 files • 1.2MB</div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn-outline" id="downloadBrand">Download</button>
+                  <a class="btn-outline" href="mailto:press@smarttechug.com">Contact press</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside style="width:320px">
+            <div class="card" style="padding:16px">
+              <h4 style="margin:0 0 8px;color:#eafaf4">Careers & Volunteering</h4>
+              <p class="small" style="color:var(--muted)">We hire developers, designers and trainers. Check open roles or send CV to <a href="mailto:careers@smarttechug.com">careers@smarttechug.com</a>.</p>
+              <a class="btn-outline" href="careers.html">View open roles</a>
+
+              <div style="margin-top:12px">
+                <h4 style="margin:8px 0;color:#eafaf4">Newsletter</h4>
+                <form id="quickNews" style="display:flex;gap:8px">
+                  <input class="nl-input" id="nl" type="email" placeholder="you@example.com" required>
+                  <button class="btn" type="submit">Subscribe</button>
+                </form>
+                <div id="nlMsg" class="small" style="margin-top:8px;color:var(--muted)"></div>
+              </div>
+
+              <div style="margin-top:12px">
+                <h4 style="margin:8px 0;color:#eafaf4">Quick Actions</h4>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <a class="btn-outline" href="mailto:info@smarttechug.com">Email us</a>
+                  <a class="btn-outline" href="tel:+256704000333">Call us</a>
+                  <a class="btn-outline" href="https://wa.me/256704000333" target="_blank">WhatsApp</a>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer style="margin-top:14px;text-align:center;color:var(--muted)">
+      <p>&copy; <span id="year">2023</span> SMARTTECHUG — All rights reserved.</p>
+      <p><a href="#top" class="back-to-top">Back to top</a></p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const form = document.getElementById('contactForm');
+    const successBox = document.getElementById('form-success');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        subject: form.subject.value,
+        message: form.message.value.trim()
+      };
+
+      successBox.style.display = 'block';
+      form.reset();
+      setTimeout(() => successBox.style.display = 'none', 6000);
+      console.log('Contact form submitted (demo):', data);
+    });
+
+    document.getElementById('downloadBrand').addEventListener('click', function () {
+      const url = 'media/smarttechug-media-kit.zip';
+      console.log('Media kit download requested');
+      const a = document.createElement('a'); a.href = url; a.download = ''; document.body.appendChild(a); a.click(); a.remove();
+    });
+
+    document.getElementById('quickNews').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = document.getElementById('nl').value.trim();
+      if(!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        document.getElementById('nlMsg').textContent = 'Enter a valid email.';
+        return;
+      }
+      document.getElementById('nlMsg').textContent = 'Subscribed — check your inbox (demo).';
+      document.getElementById('nl').value = '';
+      setTimeout(()=> document.getElementById('nlMsg').textContent = '', 5000);
+    });
+
+    const revealObs = new IntersectionObserver((entries)=> {
+      entries.forEach(en => { if(en.isIntersecting) en.target.classList.add('visible'); });
+    }, {threshold:0.08});
+    document.querySelectorAll('.fade-in').forEach(n => revealObs.observe(n));
+
+    document.querySelectorAll('a.back-to-top').forEach(a=>{
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        document.getElementById('top').scrollIntoView({behavior:'smooth'});
+      });
+    });
+  </script>
+</body>
+</html>
