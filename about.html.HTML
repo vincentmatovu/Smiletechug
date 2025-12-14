@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="SMARTTECHUG — website development, graphics design, digital marketing, ICT consultations, and online teaching.">
+  <title>SMARTTECHUG — About Us</title>
+
+  <!-- Simple embedded styles and animations (replace with style.css if preferred) -->
+  <style>
+    :root{
+      --bg:#0f2124;
+      --card:#0b1220;
+      --accent:#00c2a8;
+      --accent-rgb: 0,194,168;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.03);
+      --radius:12px;
+      --maxw:1100px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,#071024 0%, #071a2a 60%), radial-gradient(circle at 10% 10%, rgba(0,194,168,0.06), transparent 15%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+    .container{max-width:var(--maxw);margin:36px auto;padding:0 20px;}
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 12px 20px;
+      margin: 0  -20px 18px; /* extend full-width feel inside container */
+      background: linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.38));
+      backdrop-filter: blur(6px);
+      border-bottom: 2px solid rgba(var(--accent-rgb),0.06);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+      border-radius: 0 0 12px 12px;
+    }
+    .logo img{width:56px;height:56px;border-radius:10px;object-fit:cover;box-shadow:0 6px 24px rgba(0,0,0,0.5)}
+    header h1{font-size:18px;margin:0;letter-spacing:0.6px}
+    nav.main-nav { display:flex; gap:8px; align-items:center; margin-left:auto; }
+    nav.main-nav a { color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:8px; }
+    nav.main-nav a[aria-current="page"], nav.main-nav a:hover { background:var(--glass); color:#fff; }
+
+    /* mobile toggle */
+    .mobile-toggle {
+      display: none;
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid rgba(var(--accent-rgb),0.12);
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    /* mobile nav panel */
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: calc(100% + 8px);
+      background: linear-gradient(180deg, rgba(2,6,23,0.9), rgba(2,6,23,0.85));
+      border: 2px solid rgba(var(--accent-rgb),0.08);
+      border-radius: 12px;
+      padding: 12px;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 12px 40px rgba(2,6,23,0.6);
+    }
+    .mobile-nav a { display:block; color:var(--muted); padding:10px 12px; border-radius:8px; text-decoration:none; }
+    .mobile-nav a:hover { background: var(--glass); color: #fff; }
+
+    .mobile-nav.open { display:flex; }
+
+    @media (max-width:880px) {
+      nav.main-nav { display: none; }
+      .mobile-toggle { display: inline-flex; align-items:center; }
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;
+      margin:16px 0;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:var(--radius);
+      box-shadow:0 10px 40px rgba(2,6,23,0.6);overflow:hidden;
+      border: 2px solid rgba(var(--accent-rgb), 0.10); /* increased from 1px to 2px and stronger alpha */
+    }
+    .hero-left h2{margin:0 0 8px;font-size:28px}
+    .lead{color:var(--muted);margin:8px 0 18px}
+    .cta{display:inline-block;background:var(--accent);color:#04202a;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 6px 20px rgba(0,194,168,0.12)}
+    .features{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+    .feature{background:rgba(255,255,255,0.02);padding:10px 12px;border-radius:10px;font-size:13px;color:var(--muted);display:inline-flex;gap:8px;align-items:center}
+
+    .hero-right{position:relative;height:220px;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .hero-right img{width:100%;height:100%;object-fit:cover;filter:contrast(1.05) saturate(1.05);transform:scale(1.03);transition:transform .9s cubic-bezier(.2,.9,.2,1)}
+    .hero-right:hover img{transform:scale(1.08) rotate(-0.6deg)}
+
+    /* Sections */
+    section{margin:28px 0;padding:24px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:12px}
+    h2.section-title{margin:0 0 12px;font-size:20px;display:flex;align-items:center;gap:10px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px;border: 2px solid rgba(var(--accent-rgb), 0.10); /* increased border weight */ transition:transform .32s ease, box-shadow .32s ease}
+    .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(2,6,23,0.6);border-color: rgba(var(--accent-rgb), 0.22); /* stronger hover border */}
+
+    .values li{margin:8px 0}
+
+    /* Services list */
+    .services-grid .service{display:flex;gap:12px;align-items:flex-start}
+    .services-grid .service img{
+      width:64px;height:64px;border-radius:8px;object-fit:cover;flex-shrink:0;
+      border: 2px solid rgba(var(--accent-rgb),0.12); /* increased */
+    }
+
+    /* TEAM / ADMIN (preserve your pictures) */
+    .team{display:flex;flex-wrap:wrap;gap:16px}
+    .member{background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);padding:12px;border-radius:12px;display:flex;gap:12px;align-items:center;width:100%;max-width:480px;border: 2px solid rgba(var(--accent-rgb),0.10); /* increased */}
+    .member img{
+      width:96px;height:96px;border-radius:10px;object-fit:cover;
+      border: 3px solid rgba(var(--accent-rgb),0.18); /* made more visible for portraits */
+    }
+    .member h3{margin:0;font-size:15px}
+    .member p{margin:6px 0 0;color:var(--muted);font-size:14px}
+
+    /* Footer */
+    footer{margin-top:20px;text-align:center;color:var(--muted);font-size:14px;padding:18px 0;border-top: 2px solid rgba(var(--accent-rgb),0.08); /* increased */}
+
+    /* small helpers & animation utilities */
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;padding:6px 10px;background:rgba(255,255,255,0.02);border-radius:999px;font-size:13px}
+    /* fade & reveal */
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.visible{opacity:1;transform:none}
+    @keyframes floaty { 0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)} }
+    .floaty{animation:floaty 6s ease-in-out infinite}
+
+    /* Back-to-top (inline footer link) — responsive movement + hover color */
+    html { scroll-behavior: smooth; }
+
+    .back-to-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700; /* made bold */
+      font-size: 14px;
+      transition: transform .22s cubic-bezier(.2,.9,.2,1), background-color .18s ease, color .18s ease, box-shadow .18s ease, border-color .18s ease;
+      will-change: transform;
+      border: 2px solid rgba(var(--accent-rgb),0.18); /* increased for visibility */
+    }
+
+    .back-to-top:hover,
+    .back-to-top:focus {
+      transform: translateY(-6px);
+      background: var(--accent);
+      color: #04202a;
+      box-shadow: 0 12px 36px rgba(0,194,168,0.16);
+      border-color: rgba(var(--accent-rgb),0.98);
+      outline: none;
+    }
+
+    .back-to-top:focus {
+      box-shadow: 0 10px 30px rgba(0,194,168,0.18), 0 0 0 4px rgba(var(--accent-rgb),0.06);
+    }
+
+    @media (max-width:480px) {
+      .back-to-top { font-size:13px; padding:6px 8px; }
+    }
+    @media (min-width:880px) {
+      .back-to-top { right: 24px; bottom: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <a id="top"></a>
+  <div class="container">
+    <header role="banner">
+      <div class="logo"><img src="logo.png" alt="SMARTTECHUG logo — replace with your logo"></div>
+      <div style="flex:0 0 auto; margin-left:8px">
+        <h1>SMARTTECHUG</h1>
+        <p class="muted" style="margin:4px 0 0;font-size:13px">Web • Design • Marketing • ICT Training</p>
+      </div>
+
+      <!-- desktop nav -->
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="ABOUT.HTML" aria-current="page">About Us</a>
+        <a href="SERVICES.HTML">Our Services</a>
+        <a href="CONTACT.HTML">Contact</a>
+        <a href="Study.HTML">Study_Online</a>
+      </nav>
+
+      <!-- mobile toggle + panel -->
+      <button class="mobile-toggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">☰</button>
+      <nav id="mobileMenu" class="mobile-nav" aria-hidden="true">
+        <a href="index.html">Home</a>
+        <a href="ABOUT.HTML" aria-current="page">About Us</a>
+        <a href="SERVICES.HTML">Our Services</a>
+        <a href="CONTACT.HTML">Contact</a>
+        <a href="Study.HTML">Study_Online</a>
+      </nav>
+    </header>
+
+    <!-- Hero / Intro -->
+    <section class="hero reveal">
+      <div class="hero-left">
+        <h2>We build beautiful, performance-driven web experiences</h2>
+        <p class="lead">SMARTTECHUG combines practical technology, creative design and measurable marketing to help East African businesses grow online.</p>
+        <a class="cta" href="services.html">Explore our services</a>
+
+        <div class="features" aria-hidden="true" style="margin-top:12px">
+          <span class="feature">⚙️ Custom Web Apps</span>
+          <span class="feature">🎨 Branding & Design</span>
+          <span class="feature">📈 SEO & Digital Ads</span>
+          <span class="feature">🎓 Training & eLearning</span>
+        </div>
+      </div>
+
+      <div class="hero-right floaty" aria-hidden="true">
+        <!-- replace hero.jpg with a relevant photo or illustration -->
+        <img src="img/tm.png" alt="Team working on design and code — replace with your image">
+      </div>
+    </section>
+
+    <!-- About / Mission / Vision -->
+    <section class="about reveal" id="about">
+      <h2 class="section-title">About SMARTTECHUG</h2>
+      <p>SMARTTECHUG is a technology and creative services company providing website development, graphic design, digital marketing, ICT consultancy and online teaching. We focus on practical, measurable solutions that drive growth for businesses and learners across East Africa.</p>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="card">
+          <h3>Mission</h3>
+          <p class="muted">Deliver reliable, scalable and user-centered technology solutions that empower clients to grow and adapt.</p>
+        </div>
+
+        <div class="card">
+          <h3>Vision</h3>
+          <p class="muted">Be a trusted technology partner across East Africa — known for innovation, integrity and measurable results.</p>
+        </div>
+
+        <div class="card">
+          <h3>How we work</h3>
+          <ul class="muted" style="padding-left:18px;margin:8px 0 0">
+            <li>Discovery & user research</li>
+            <li>Design & prototyping</li>
+            <li>Development & testing</li>
+            <li>Launch, analytics & growth</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top:18px">Core Values</h3>
+      <ul class="values muted" style="padding-left:18px">
+        <li>Customer focus — outcomes for real business problems.</li>
+        <li>Integrity — transparency and honesty in delivery.</li>
+        <li>Excellence — quality code and design.</li>
+        <li>Collaboration — partnership with clients and communities.</li>
+        <li>Innovation — pragmatic problem solving.</li>
+      </ul>
+    </section>
+
+    <!-- Services highlight -->
+    <section class="services reveal">
+      <h2 class="section-title">WHAT WE DO!</h2>
+      <div class="grid services-grid">
+        <div class="card service">
+          <img src="img/wd.png" alt="Web development — replace image">
+          <div>
+            <h3>Websites & Web Apps</h3>
+            <p class="muted">Responsive, accessible and optimized for conversions — from brochure sites to complex web apps.</p>
+          </div>
+        </div>
+
+        <div class="card service">
+          <img src="img/gd.jfif" alt="Design and branding — replace image">
+          <div>
+            <h3>Branding & Graphic Design</h3>
+            <p class="muted">Logo design, brand identity, marketing materials and UI design for a consistent presence.</p>
+          </div>
+        </div>
+
+        <div class="card service">
+          <img src="img/dm.jpeg" alt="Digital marketing — replace image">
+          <div>
+            <h3>SEO & Digital Marketing</h3>
+            <p class="muted">SEO, social campaigns and paid ads with measurable KPIs to grow traffic and revenue.</p>
+          </div>
+        </div>
+
+        <div class="card service">
+          <img src="img/sk.jpg" alt="ICT training — replace image">
+          <div>
+            <h3>ICT Consultancy & Training</h3>
+            <p class="muted">Practical training, e-learning and consultancy to upskill teams and implement technology solutions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM / ADMIN (keeps owner pictures; update names and files as necessary) -->
+    <section class="reveal">
+      <h2 class="section-title">Our Team / Administration</h2>
+      <div class="team" role="list">
+        <article class="member card" role="listitem" aria-label="Vincent Matovu — CEO">
+          <img src="img/CEO.jpeg" alt="MR. VINCENT MATOVU — CEO">
+          <div>
+            <h3>MR.VINCENT MATOVU</h3>
+            <p class="muted">Chief Executive Officer. Leads strategy, product and client partnerships. 10+ years building digital solutions.</p>
+            <p style="margin-top:8px"><span class="pill">CEO</span> <span class="muted" style="margin-left:8px">matovuvincent96@gmail.com</span></p>
+          </div>
+        </article>
+
+        <article class="member card" role="listitem" aria-label="Athuuira Ireen — OPM">
+          <img src="img/OP.png" alt="MS ATHUURA IREEN — OPM">
+          <div>
+            <h3>MS.ATHUURA IREEN</h3>
+            <p class="muted">Operations & Program Manager. Manages delivery, training programs and client success.</p>
+            <p style="margin-top:8px"><span class="pill">OPM</span> <span class="muted" style="margin-left:8px">ireenatuhuura@smarttechug.com</span></p>
+          </div>
+        </article>
+
+        <!-- Add more members as needed; keep consistent card layout -->
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="reveal">
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <div>
+          <h3 style="margin:0">Ready to start your project?</h3>
+          <p class="muted" style="margin:6px 0 0">Contact our team for a free consultation and project estimate.</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <a class="cta" href="contact.html">Get in touch</a>
+          <a class="cta" href="https://wa.me/256783278084?text=Hello%20SMARTTECHUG%2C%20I%27d%20like%20to%20discuss%20a%20project" target="_blank" rel="noopener noreferrer" style="background:#25D366;color:#04202a;box-shadow:0 6px 20px rgba(37,211,102,0.12);text-decoration:none">💬 WhatsApp</a>
+          <a href="tel:+256700000000" style="color:var(--muted);text-decoration:none">Call: +256 760391075/0773604412</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Follow us:
+        <a href="https://wa.me/256783278084" target="_blank" rel="noopener noreferrer">WhatsApp</a> |
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a> |
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a>
+      </p>
+      <p>&copy; <span id="year">2025</span> SMARTTECHUG</p>
+      <p>
+        <!-- restored original inline Back to top link -->
+        <a href="#top" class="back-to-top" aria-label="Back to top">Back to top</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Tiny script to set year and reveal on scroll -->
+  <script>
+    // current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // simple reveal-on-scroll
+    function revealOnScroll() {
+      document.querySelectorAll('.reveal').forEach(el=>{
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 60){
+          el.classList.add('visible');
+        }
+      });
+    }
+    window.addEventListener('scroll', revealOnScroll, {passive:true});
+    window.addEventListener('load', ()=>{ revealOnScroll(); /* small entry animation */ document.querySelectorAll('.hero-right img').forEach(img=>img.style.transition='transform .9s cubic-bezier(.2,.9,.2,1)')});
+
+    // mobile menu toggle (keeps header consistent with other pages)
+    (function(){
+      const btn = document.querySelector('.mobile-toggle');
+      const panel = document.getElementById('mobileMenu');
+      if(!btn || !panel) return;
+      btn.addEventListener('click', ()=>{
+        const open = panel.classList.toggle('open');
+        panel.setAttribute('aria-hidden', String(!open));
+        btn.setAttribute('aria-expanded', String(open));
+      });
+      // close when clicking outside
+      document.addEventListener('click', (e)=>{
+        if(!panel.classList.contains('open')) return;
+        if(!panel.contains(e.target) && !btn.contains(e.target)){
+          panel.classList.remove('open');
+          panel.setAttribute('aria-hidden','true');
+          btn.setAttribute('aria-expanded','false');
+        }
+      }, {passive:true});
+    })();
+
+    /* removed fixed back-to-top visibility JS — footer link uses CSS smooth scroll and hover animation */
+  </script>
+</body>
+</html>
